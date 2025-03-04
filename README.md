@@ -38,7 +38,7 @@ pip install -e .
 
 Ankify expects Markdown files structured as follows:
 
-```markdown
+````markdown
 ---
 title: Your Document Title
 ---
@@ -68,7 +68,7 @@ Your answer here. Full markdown support!
 \int_{a}^{b} f(x) \, dx
 \]
 ```
-```
+````
 
 Each file should have:
 - YAML frontmatter with a title (optional)
