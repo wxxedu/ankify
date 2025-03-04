@@ -1,0 +1,10 @@
+certifi==2025.1.31
+charset-normalizer==3.4.1
+idna==3.10
+markdown2==2.5.3
+python-dotenv==1.0.1
+PyYAML==6.0.2
+requests==2.32.3
+setuptools==75.8.2
+tqdm==4.67.1
+urllib3==2.3.0
