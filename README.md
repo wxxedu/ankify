@@ -27,7 +27,11 @@ seamlessly syncing with Anki for effective spaced repetition learning.
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+# Install from source
+pip install .
+
+# Or install in development mode
+pip install -e .
 ```
 
 ## Markdown Format
@@ -76,19 +80,19 @@ Each file should have:
 
 ```bash
 # Process a single file
-python ankify/main.py path/to/your/notes.md --root-deck-name "Your Deck"
+ankify path/to/your/notes.md --root-deck-name "Your Deck"
 
 # Process an entire directory
-python ankify/main.py path/to/your/notes/ --root-deck-name "Your Deck"
+ankify path/to/your/notes/ --root-deck-name "Your Deck"
 
 # Dry run (no changes to Anki)
-python ankify/main.py path/to/your/notes.md --dry-run --root-deck-name "Your Deck"
+ankify path/to/your/notes.md --dry-run --root-deck-name "Your Deck"
 
 # Limit to first N cards
-python ankify/main.py path/to/your/notes.md --limit 10 --root-deck-name "Your Deck"
+ankify path/to/your/notes.md --limit 10 --root-deck-name "Your Deck"
 
 # Start fresh (ignore existing Anki IDs)
-python ankify/main.py path/to/your/notes.md --from-scratch --root-deck-name "Your Deck"
+ankify path/to/your/notes.md --from-scratch --root-deck-name "Your Deck"
 ```
 
 You can set the root deck name in an environment variable to avoid specifying it each time:
