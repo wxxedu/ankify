@@ -533,6 +533,13 @@ def add_or_update_note_in_anki(file_path: Path, deck_name: str, title: str, card
     create_deck_request = create_anki_deck_request(full_deck_name)
     send_anki_request(create_deck_request, dry_run)
 
+    if dry_run:
+        print("\n--- CARD CONTENT (DRY RUN) ---")
+        print(f"Deck: {full_deck_name}")
+        print(f"Question: {card['question']}")
+        print(f"Answer: {card['answer']}")
+        print("-----------------------------\n")
+
     if 'anki_id' in card:
         logger.debug(f"Updating existing note with ID {card['anki_id']} for heading3 '{heading3_text}'")
         update_request = create_update_note_request(card['anki_id'], card['question'], card['answer'])

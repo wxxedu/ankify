@@ -16,11 +16,16 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "requests",
-        "markdown2",
-        "pyyaml",
-        "tqdm",
-        "python-dotenv",
+        "requests==2.32.3",
+        "markdown2==2.5.3",
+        "pyyaml==6.0.2",
+        "tqdm==4.67.1",
+        "python-dotenv==1.0.1",
+        "certifi==2025.1.31",
+        "charset-normalizer==3.4.1",
+        "idna==3.10",
+        "pygments==2.19.1",
+        "urllib3==2.3.0",
     ],
     entry_points={
         "console_scripts": [
