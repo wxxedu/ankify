@@ -86,7 +86,7 @@ def markdown_to_html(text: str) -> str:
     text_without_equations, inline_equations, block_equations = extract_equations(text)
 
     # Convert to HTML
-    html = markdown2.markdown(text_without_equations)
+    html = markdown2.markdown(text_without_equations, extras=['fenced-code-blocks', 'codehilite'])
 
     # Reinsert equations
     html = reinsert_equations(html, inline_equations, block_equations)
