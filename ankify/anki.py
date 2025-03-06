@@ -235,7 +235,7 @@ class AnkiConnect:
 
     async def ensure_model_template_exists(self) -> bool:
         """
-        Ensure the ObsidianCard model template exists, create it if not.
+        Ensure the AnkifyCard model template exists, create it if not.
 
         Returns:
             bool: True if the model template was newly created during this call,
@@ -263,7 +263,7 @@ class AnkiConnect:
                         self.models = set(models)
 
                 # Create the model if it doesn't exist
-                if "ObsidianCard" not in self.models:
+                if "AnkifyCard" not in self.models:
                     model_template = Card.template()
                     await self.send_request({
                         "action": "createModel",
@@ -523,7 +523,7 @@ class Card(BaseModel):
     @staticmethod
     def template():
         return {
-            "modelName": "ObsidianCard",
+            "modelName": "AnkifyCard",
             "inOrderFields": ["id", "question", "answer", "comments", "obsidian_url"],
             "css": ANKIFY_CARD_CSS,
             "isCloze": False,
@@ -545,7 +545,7 @@ class Card(BaseModel):
         """
         return {
             "deckName": self.deck_name,
-            "modelName": "ObsidianCard",
+            "modelName": "AnkifyCard",
             "fields": {
                 "id": self.id,
                 "question": markdown_to_html(self.question),
@@ -585,9 +585,9 @@ if __name__ == "__main__":
             try:
                 created = await anki.ensure_model_template_exists()
                 if created:
-                    print("ObsidianCard template was created.")
+                    print("AnkifyCard template was created.")
                 else:
-                    print("ObsidianCard template already exists.")
+                    print("AnkifyCard template already exists.")
             except Exception as e:
                 print(f"Error: {e}")
 
