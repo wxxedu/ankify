@@ -2,13 +2,13 @@ import setuptools
 
 setuptools.setup(
     name="ankify",
-    version="0.1.0",
+    version="1.0.0",
     author="Xiuxuan Wang",
     author_email="xiuxuan.wang@u.nus.edu",
     description="Tool to import markdown flashcards to Anki",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/user/ankify",
+    url="https://github.com/wxxedu/ankify",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -21,11 +21,11 @@ setuptools.setup(
         "pyyaml==6.0.2",
         "tqdm==4.67.1",
         "python-dotenv==1.0.1",
-        "certifi==2025.1.31",
-        "charset-normalizer==3.4.1",
-        "idna==3.10",
+        "pydantic==2.10.6",
         "pygments==2.19.1",
-        "urllib3==2.3.0",
+        "python-frontmatter==1.1.0",
+        "asyncio==3.4.3",
+        "aiohttp==3.11.13",
     ],
     entry_points={
         "console_scripts": [

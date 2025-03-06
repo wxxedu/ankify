@@ -10,8 +10,6 @@ seamlessly syncing with Anki for effective spaced repetition learning.
   Anki flashcards
 - **Bidirectional Syncing**: Keep track of Anki IDs in your Markdown files for
   future updates
-- **LaTeX Support**: Properly handles both inline `\(x^2\)` and block
-  `\[E=mc^2\]` equations
 - **Hierarchical Organization**: Cards are organized into decks based on file
   and heading structure
 - **Batch Processing**: Process individual files or entire directories at once
@@ -41,11 +39,15 @@ Ankify expects Markdown files structured as follows:
 ````markdown
 ---
 title: Your Document Title
+deck: root_deck::some_deck
 ---
 
-## Section Heading
+# Main Section
 
-### Subsection Heading
+## Subsection
+
+### Card Title
+^unique_card_id  # Optional, will be auto-generated if missing
 
 #### Question
 
@@ -55,68 +57,56 @@ Markdown formatting is supported!
 Lists work too:
 - Item 1
 - Item 2
-
-Math works: \(E = mc^2\)
 ```
 
 #### Answer
 
 ```
 Your answer here. Full markdown support!
-
-\[
-\int_{a}^{b} f(x) \, dx
-\]
 ```
 ````
 
 Each file should have:
-- YAML frontmatter with a title (optional)
-- Level 2 headings (`##`) for main sections
-- Level 3 headings (`###`) for subsections (optional)
+- YAML frontmatter with a title (optional) and a deck (optional). Deck will
+  have higher precedence than title. If neither is provided, then you will need
+  to specify the `--root-deck-name` flag.
+- Level 1 headings (`#`) for main sections
+- Level 2 headings (`##`) for subsections
+- Level 3 headings (`###`) for individual cards
+- Optional card ID line starting with `^` after the card title
 - Question/Answer pairs using Level 4 headings (`####`) and code blocks
 
 ## Usage
 
 ```bash
 # Process a single file
+ankify path/to/your/notes.md
+
+# Process a single file with custom root deck name
 ankify path/to/your/notes.md --root-deck-name "Your Deck"
 
 # Process an entire directory
-ankify path/to/your/notes/ --root-deck-name "Your Deck"
+ankify path/to/your/notes/
 
-# Dry run (no changes to Anki)
-ankify path/to/your/notes.md --dry-run --root-deck-name "Your Deck"
+# Dry run (no changes to Anki), but prints out each card in the console.
+ankify path/to/your/notes.md --dry-run
 
 # Limit to first N cards
-ankify path/to/your/notes.md --limit 10 --root-deck-name "Your Deck"
-
-# Start fresh (ignore existing Anki IDs)
-ankify path/to/your/notes.md --from-scratch --root-deck-name "Your Deck"
-```
-
-You can set the root deck name in an environment variable to avoid specifying it each time:
-```bash
-export ANKI_ROOT_DECK_NAME="Your Deck"
-```
-
-Or create a `.env` file:
-```
-ANKI_ROOT_DECK_NAME=Your Deck
+ankify path/to/your/notes.md --limit 10
 ```
 
 ## How It Works
 
 1. Ankify parses your Markdown files, extracting questions and answers
-2. It creates a hierarchical deck structure in Anki: `RootDeck::FileTitle::Section`
-3. When cards are added to Anki, their IDs are stored as HTML comments in your Markdown
+2. It creates a hierarchical deck structure in Anki based on headings: `RootDeck::H1::H2`
+3. When cards are added to Anki, their IDs are stored in the Markdown with a `^` prefix
 4. On subsequent runs, Ankify updates existing cards instead of creating duplicates
 
 ## Troubleshooting
 
 - **Connection errors**: Ensure Anki is running and AnkiConnect addon is installed
 - **Missing cards**: Check your Markdown structure follows the expected format
-- **LaTeX issues**: Verify your LaTeX syntax is correct
+- **Card count mismatch**: Ensure each level 3 heading has corresponding Question and Answer sections
 
 ## Contributing
 
