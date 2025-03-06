@@ -6,6 +6,7 @@ import sys
 from asyncio import Semaphore
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+from ankify.mcp import mcp
 
 import frontmatter
 from ankify.anki import AnkiConnect, Card
@@ -424,14 +425,27 @@ def import_to_anki(file_path: str, default_deck_name: str = "Default") -> None:
             raise Exception(f"Error during import: {str(e)}")
     # Run the async function
     asyncio.run(_import_to_anki(file_path, default_deck_name))
+
+
 def main():
     parser = argparse.ArgumentParser(description="Convert Markdown notes to Anki flashcards")
-    parser.add_argument("path", help="Path to a Markdown file or directory")
+    parser.add_argument("path", help="Path to a Markdown file or directory", nargs='?')
     parser.add_argument("--root-deck-name", help="Root deck name to use (overrides frontmatter)", default="Ankify")
     parser.add_argument("--dry-run", action="store_true", help="Print cards without importing to Anki")
     parser.add_argument("--limit", type=int, help="Limit processing to first N cards")
+    parser.add_argument("--mcp", action="store_true", help="Run the MCP interface")
 
     args = parser.parse_args()
+
+    # If MCP mode is enabled, run that and exit
+    if args.mcp:
+        mcp.run()
+        return
+
+    # Otherwise, path is required
+    if not args.path:
+        print("Error: Path is required unless --mcp is used")
+        sys.exit(1)
 
     # Check if path exists
     if not os.path.exists(args.path):
