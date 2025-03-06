@@ -1,12 +1,10 @@
-from typing import Match, Optional, Dict, Any, Tuple
+from typing import Match, Optional, Dict, Any, Tuple, List
 from uuid import uuid4
 from pydantic import BaseModel, Field
 import aiohttp
 import asyncio
 import re
 import markdown2
-
-from pydantic.types import List
 
 # TODO: this part is not added yet.
 MERMAID_SCRIPT = r'''
@@ -459,7 +457,7 @@ def markdown_to_html(text: str) -> str:
 class Card(BaseModel):
     id: str = Field(default_factory=lambda: uuid4().hex)
     deck_name: str
-    obsidian_url: Optional[str]
+    obsidian_url: Optional[str] = Field(default=None)
     question: str
     answer: str
     tags: List[str] = Field(default_factory=list)

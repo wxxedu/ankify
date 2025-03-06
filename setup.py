@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="ankify",
-    version="1.0.0",
+    version="1.1.0",
     author="Xiuxuan Wang",
     author_email="xiuxuan.wang@u.nus.edu",
     description="Tool to import markdown flashcards to Anki",
@@ -40,6 +40,7 @@ setuptools.setup(
         "typing_extensions==4.12.2",
         "urllib3==2.3.0",
         "yarl==1.18.3",
+        "mcp==1.3.0"
     ],
     entry_points={
         "console_scripts": [

@@ -14,6 +14,7 @@ seamlessly syncing with Anki for effective spaced repetition learning.
   and heading structure
 - **Batch Processing**: Process individual files or entire directories at once
 - **Dry Run Mode**: Preview changes without modifying your Anki collection
+- **Model Context Protocol Support**: Integrate directly with AI assistants like Claude
 
 ## Prerequisites
 
@@ -94,6 +95,27 @@ ankify path/to/your/notes.md --dry-run
 # Limit to first N cards
 ankify path/to/your/notes.md --limit 10
 ```
+
+### Model Context Protocol (MCP) Integration
+
+To use Ankify with AI assistants that support the Model Context Protocol:
+
+1. Create an MCP configuration file with the following format:
+   ```json
+   {
+     "globalShortcut": "Ctrl+Space",
+     "mcpServers": {
+       "ankify": {
+         "command": "/Users/yourusername/path/to/ankify/.venv/bin/ankify",
+         "args": ["--mcp"]
+       }
+     }
+   }
+   ```
+
+2. Replace the command path with the path to your Ankify installation (you can find this with `which ankify`)
+
+3. Add this configuration file to your AI assistant that supports MCP (such as Claude Desktop)
 
 ## How It Works
 

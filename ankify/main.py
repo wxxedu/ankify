@@ -439,6 +439,7 @@ def main():
 
     # If MCP mode is enabled, run that and exit
     if args.mcp:
+        print("Starting MCP Interface...", file=sys.stderr)
         mcp.run()
         return
 
