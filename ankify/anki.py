@@ -360,6 +360,23 @@ class AnkiConnect:
         except Exception as e:
             raise Exception(f"Failed to create or update card: {str(e)}")
 
+    async def list_decks(self) -> List[str]:
+        """
+        Gets the complete list of deck names from Anki.
+
+        Returns:
+            list: A list of all deck names in Anki
+        """
+        try:
+            result = await self.send_request({
+                "action": "deckNames",
+                "version": 6
+            })
+            if result is None:
+                raise Exception('No results returned')
+            return result
+        except Exception as e:
+            raise Exception(f"Failed to list decks: {str(e)}")
 
 def extract_equations(text: str) -> Tuple[str, Dict[str, str], Dict[str, str]]:
     """Extract LaTeX equations from text and replace with placeholders"""
