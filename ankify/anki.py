@@ -335,6 +335,7 @@ class AnkiConnect:
         try:
             # First check if the card already exists
             await self.ensure_deck_created(card.deck_name)
+            await self.ensure_model_template_exists()
             anki_id = await self.get_anki_id_by_card_id(card.id)
 
             if anki_id is None:
