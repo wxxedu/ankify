@@ -156,6 +156,7 @@ class AnkiConnect:
         self.max_retries = 3
         self.retry_delay = 1  # seconds
         self.existing_decks = set()
+        self.models = set()
 
     async def __aenter__(self):
         self.session = aiohttp.ClientSession()
@@ -232,30 +233,55 @@ class AnkiConnect:
             raise Exception(response_data['error'])
 
     async def ensure_model_template_exists(self) -> bool:
-        """Ensure the ObsidianCard model template exists, create it if not."""
-        try:
-            # First check if Anki is running and AnkiConnect is available
+        """
+        Ensure the ObsidianCard model template exists, create it if not.
+
+        Returns:
+            bool: True if the model template was newly created during this call,
+                 False if the template already existed in Anki and no creation was necessary.
+                 This return value can be used to determine if this was the first time
+                 the template was set up.
+        """
+        retries = 3
+        last_exception = None
+
+        for attempt in range(retries):
             try:
-                await self.send_request({"action": "version"})
-            except Exception as _:
-                raise Exception("Make sure Anki is running and AnkiConnect plugin is installed.")
+                # First check if Anki is running and AnkiConnect is available
+                if len(self.models) <= 0:
+                    try:
+                        await self.send_request({"action": "version"})
+                    except Exception as _:
+                        raise Exception("Make sure Anki is running and AnkiConnect plugin is installed.")
 
-            # Check if model exists
-            models = await self.send_request({
-                "action": "modelNames"
-            })
+                    # Check if model exists
+                    models = await self.send_request({
+                        "action": "modelNames"
+                    })
+                    if models:
+                        self.models = set(models)
 
-            # Create the model if it doesn't exist
-            if models and "ObsidianCard" not in models:
-                model_template = Card.template()
-                await self.send_request({
-                    "action": "createModel",
-                    "params": model_template
-                })
-                return True
-            return False
-        except Exception as e:
-            raise Exception(f"Failed to ensure model template exists: {str(e)}")
+                # Create the model if it doesn't exist
+                if "ObsidianCard" not in self.models:
+                    model_template = Card.template()
+                    await self.send_request({
+                        "action": "createModel",
+                        "params": model_template
+                    })
+                    return True
+                return False
+
+            except Exception as e:
+                last_exception = e
+                if attempt < retries - 1:
+                    # Wait before retrying
+                    await asyncio.sleep(self.retry_delay * (attempt + 1))
+
+        # If we've exhausted all retries, raise the last exception
+        if last_exception:
+            raise Exception(f"Failed to ensure model template exists after {retries} attempts: {str(last_exception)}")
+
+        return False  # This line should not be reached, but is included for completeness
 
     async def get_anki_id_by_card_id(self, card_id: str):
         """
@@ -334,8 +360,11 @@ class AnkiConnect:
         """
         try:
             # First check if the card already exists
+            new_creation = await self.ensure_model_template_exists()
+            # If the model was newly created, wait a moment to make sure Anki has processed it
+            if new_creation:
+                await asyncio.sleep(0.25)  # 250ms delay
             await self.ensure_deck_created(card.deck_name)
-            await self.ensure_model_template_exists()
             anki_id = await self.get_anki_id_by_card_id(card.id)
 
             if anki_id is None:
