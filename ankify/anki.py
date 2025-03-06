@@ -30,13 +30,14 @@ MERMAID_SCRIPT = r'''
 ANKIFY_CARD_CSS = r'''
 .card {
     font-family: 'Arial', sans-serif;
-    font-size: 16px;
+    font-size: 40px;
     text-align: left;
     color: #333;
     background-color: #f9f9f9;
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
+    margin-top: 40px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
@@ -530,7 +531,7 @@ class Card(BaseModel):
                 {
                     "Name": "Card",
                     "Front": "<div class='ankify-question'>{{question}}</div>",
-                    "Back": "{{FrontSide}}\n\n<hr id=answer>\n\n<div class='ankify-answer'>{{answer}}</div>\n\n<hr>\n\n<div class='ankify-comments'>{{comments}}</div>\n\n<hr>\n\n<div class='ankify-obsidian-link'><a href='{{obsidian_url}}'>Open in Obsidian</a></div>\n\n<div class='ankify-card-id' style='display:none;'>{{id}}</div>"
+                    "Back": "{{FrontSide}}\n\n<hr id=answer>\n\n<div class='ankify-answer'>{{answer}}</div>\n\n{{#comments}}<hr>\n\n<div class='ankify-comments'>{{comments}}</div>\n\n{{/comments}}{{#obsidian_url}}<hr>\n\n<div class='ankify-obsidian-link'><a href='{{obsidian_url}}'>Open in Obsidian</a></div>{{/obsidian_url}}\n\n<div class='ankify-card-id' style='display:none;'>{{id}}</div>"
                 }
             ]
         }
