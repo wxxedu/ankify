@@ -123,6 +123,9 @@ async def insert_card(deck_name: str, question: str, answer: str):
     - ε: Use \(\epsilon\) instead of ε
     - Set notation: Use \(\{x \in \mathbb{R} \mid x > 0\}\) instead of {x ∈ ℝ | x > 0}
     - Limits: Use \(\lim_{x \to \infty} f(x)\) instead of lim(x→∞) f(x)
+    - X̄: Use \(\bar{X}\) instead of X̄.
+    - μ: Use \(\mu\) instead of μ.
+    - σ/√n: Use \(\sigma/\sqrt{n}\) instead of σ/√n.
     """
     card = Card(deck_name=deck_name, question=question, answer=answer)
     try:
